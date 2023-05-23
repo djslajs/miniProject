@@ -1,5 +1,6 @@
 package com.miniproject.response;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -15,12 +16,17 @@ import java.util.Map;
  *     }
  * }
  */
-@RequiredArgsConstructor
 @Getter
 public class ErrorResponse {
 
     private final String code;
     private final String message;
+
+    @Builder
+    public ErrorResponse(String code, String message) {
+        this.code = code;
+        this.message = message;
+    }
 
     private final Map<String, String> validationField = new HashMap<>();
 

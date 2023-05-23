@@ -1,5 +1,6 @@
 package com.miniproject.controller;
 
+import com.miniproject.domain.Post;
 import com.miniproject.request.PostCreate;
 import com.miniproject.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping( "/posts")
-    public Map<String, String> post(@RequestBody @Valid PostCreate request) {//, BindingResult result) {
+    public Map post(@RequestBody @Valid PostCreate request) {//, BindingResult result) {
 
         /**
          *  데이터 검증이유
@@ -47,8 +48,14 @@ public class PostController {
 //            error.put( fieldName, errorMessage);
 //            return error;
 //        }
-
-        postService.write( request);
-        return Map.of();
+        /**
+         * 저장한 데이터 Entity -> reponse로 응답하기
+         * 저장한 데이터의 primary_id -> response로 응답하기
+         *                      ``Client에서는 수신한 id를 글 조회 API를 통해서 데이터를 수신받음
+         *  응답 필요 없음 -> 클라이언트에서 모든 POST 데이터 context를 잘 관리함
+         *  서버에서 유연하게 대응하는게 좋다( fix X) -> 한번에 잘 처리되는 케이스는 거의 없다. 잘 관리하는 형태로 하는것이 좋다.
+         */
+//        return postService.write( request);
+        return Map.of( "postId", postService.write( request));
     }
 }
