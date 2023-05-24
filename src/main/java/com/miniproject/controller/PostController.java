@@ -9,10 +9,7 @@ import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -27,7 +24,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping( "/posts")
-    public Map post(@RequestBody @Valid PostCreate request) {//, BindingResult result) {
+    public void post(@RequestBody @Valid PostCreate request) {//, BindingResult result) {
 
         /**
          *  데이터 검증이유
@@ -38,16 +35,6 @@ public class PostController {
          *  5. 서버 개발자의 편안함을 위해
          */
 
-        log.info( "params={}", request.toString());
-//        if (result.hasErrors()) {
-//            List<FieldError> fieldErrors = result.getFieldErrors();
-//            FieldError firstFieldError = fieldErrors.get( 0);
-//            String fieldName = firstFieldError.getField();
-//            String errorMessage = firstFieldError.getDefaultMessage();
-//            Map< String, String> error = new HashMap();
-//            error.put( fieldName, errorMessage);
-//            return error;
-//        }
         /**
          * 저장한 데이터 Entity -> reponse로 응답하기
          * 저장한 데이터의 primary_id -> response로 응답하기
@@ -55,7 +42,19 @@ public class PostController {
          *  응답 필요 없음 -> 클라이언트에서 모든 POST 데이터 context를 잘 관리함
          *  서버에서 유연하게 대응하는게 좋다( fix X) -> 한번에 잘 처리되는 케이스는 거의 없다. 잘 관리하는 형태로 하는것이 좋다.
          */
-//        return postService.write( request);
-        return Map.of( "postId", postService.write( request));
+        postService.write( request);
+//        Long postId = postService.write( request);
+//        return Map.of( "postId", postId);
+    }
+
+    /**
+     *  /posts -> 글 전체 조회( 검색+ 페이징)
+     *  /posts/{postId} -> 글 한개만 조회
+     */
+
+    @GetMapping("/posts/{postId}")
+    public Post get( @PathVariable(name = "postId") Long id) {
+        Post post = postService.get( id);
+        return post;
     }
 }

@@ -10,23 +10,25 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MockMvcBuilder;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 //@WebMvcTest
-@AutoConfigureMockMvc
 @SpringBootTest
+@AutoConfigureMockMvc
 class PostControllerTest {
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Autowired
     private MockMvc mockMvc;
@@ -44,21 +46,21 @@ class PostControllerTest {
     void test() throws Exception {
         // given
         PostCreate postCreate = PostCreate.builder()
-                .title( "제목입니다")
-                .content("내용입니다")
+                .title( "제목입니다.")
+                .content("내용입니다.")
                 .build();
         String jsonData = objectMapper.writeValueAsString( postCreate);
 
         System.out.println( jsonData);
         // expected
 
-        mockMvc.perform( MockMvcRequestBuilders.post( "/posts")
+        mockMvc.perform( post( "/posts")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content( jsonData)
                 )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(""))
-                .andDo(MockMvcResultHandlers.print());
+                .andExpect(status().isOk())
+                .andExpect(content().string(""))
+                .andDo(print());
     }
 
     @Test
@@ -68,16 +70,16 @@ class PostControllerTest {
                 .content("내용입니다")
                 .build();
         String jsonData = objectMapper.writeValueAsString( postCreate);
-        mockMvc.perform( MockMvcRequestBuilders.post( "/posts")
+        mockMvc.perform( post( "/posts")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content( jsonData)
                 )
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(status().isBadRequest())
 //                .andExpect(MockMvcResultMatchers.content().string( "hello"))
                 .andExpect(jsonPath( "$.code").value( "400"))
                 .andExpect(jsonPath( "$.message").value( "잘못된 요청입니다."))
                 .andExpect(jsonPath( "$.validationField.title").value( "타이틀을 입력해주세요."))
-                .andDo(MockMvcResultHandlers.print());
+                .andDo(print());
     }
 
     @Test
@@ -89,17 +91,39 @@ class PostControllerTest {
                 .build();
         String jsonData = objectMapper.writeValueAsString( postCreate);
 
-        mockMvc.perform( MockMvcRequestBuilders.post( "/posts")
+        mockMvc.perform( post( "/posts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content( jsonData)
                 )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print());
+                .andExpect(status().isOk())
+                .andDo(print());
         // then
         Assertions.assertEquals( 1L, postRepository.count());
         Post post = postRepository.findAll().get( 0);
         Assertions.assertEquals( "제목입니다.", post.getTitle());
         Assertions.assertEquals( "내용입니다.", post.getContent());
+    }
+
+    @Test
+    @DisplayName( "글 한개 조회")
+    void test4() throws Exception {
+        //given
+        Post post = Post.builder()
+                .title("제목")
+                .content("내용")
+                .build();
+        postRepository.save( post);
+        //when
+
+        mockMvc.perform( get( "/posts/{postId}", post.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+//                .content( json))
+                .andExpect( status().isOk())
+                .andExpect( jsonPath("$.id").value( post.getId()))
+                .andExpect( jsonPath("$.title").value( post.getTitle()))
+                .andExpect( jsonPath("$.content").value( post.getContent()))
+                .andDo(print());
+        //then
     }
 
 }
