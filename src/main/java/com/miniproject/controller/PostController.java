@@ -2,6 +2,7 @@ package com.miniproject.controller;
 
 import com.miniproject.domain.Post;
 import com.miniproject.request.PostCreate;
+import com.miniproject.response.PostResponse;
 import com.miniproject.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,8 +54,13 @@ public class PostController {
      */
 
     @GetMapping("/posts/{postId}")
-    public Post get( @PathVariable(name = "postId") Long id) {
-        Post post = postService.get( id);
-        return post;
+    public PostResponse get( @PathVariable(name = "postId") Long id) {
+        /**
+         * Request 클래스 분리
+         * Response 클래스 분리
+         */
+        PostResponse response = postService.get( id);
+        // 서비스 정책에 맞는 응답 클래스 분리
+        return response;
     }
 }

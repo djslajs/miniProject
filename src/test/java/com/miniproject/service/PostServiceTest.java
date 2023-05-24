@@ -3,6 +3,7 @@ package com.miniproject.service;
 import com.miniproject.domain.Post;
 import com.miniproject.repositiry.PostRepository;
 import com.miniproject.request.PostCreate;
+import com.miniproject.response.PostResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -56,7 +57,7 @@ class PostServiceTest {
         Long postId = requestPost.getId();
 
         //when
-        Post post = postService.get( postId);
+        PostResponse post = postService.get( postId);
 
         //then
         Assertions.assertNotNull( post);
