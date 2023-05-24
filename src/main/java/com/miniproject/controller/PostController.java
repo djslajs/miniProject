@@ -44,8 +44,6 @@ public class PostController {
          *  서버에서 유연하게 대응하는게 좋다( fix X) -> 한번에 잘 처리되는 케이스는 거의 없다. 잘 관리하는 형태로 하는것이 좋다.
          */
         postService.write( request);
-//        Long postId = postService.write( request);
-//        return Map.of( "postId", postId);
     }
 
     /**
@@ -59,8 +57,19 @@ public class PostController {
          * Request 클래스 분리
          * Response 클래스 분리
          */
-        PostResponse response = postService.get( id);
-        // 서비스 정책에 맞는 응답 클래스 분리
-        return response;
+        return postService.get( id);
+    }
+
+    /**
+     * 조회용 API
+     * 여러개 조회
+     */
+    @GetMapping("/posts")
+    public List<PostResponse> getList() {
+        /**
+         * Request 클래스 분리
+         * Response 클래스 분리
+         */
+        return postService.getList();
     }
 }

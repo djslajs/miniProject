@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.miniproject.domain.Post;
 import com.miniproject.repositiry.PostRepository;
 import com.miniproject.request.PostCreate;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,11 +14,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -125,6 +123,37 @@ class PostControllerTest {
                 .andExpect( jsonPath("$.id").value( post.getId()))
                 .andExpect( jsonPath("$.title").value( "1234567890"))
                 .andExpect( jsonPath("$.content").value( post.getContent()))
+                .andDo(print());
+        //then
+    }
+
+    @Test
+    @DisplayName( "글 여러개 조회")
+    void test5() throws Exception {
+        //given
+        Post post1 = Post.builder()
+                .title("123456789012345")
+                .content("내용")
+                .build();
+        postRepository.save( post1);
+
+        Post post2 = Post.builder()
+                .title("123456789012345")
+                .content("내용")
+                .build();
+        postRepository.save( post2);
+        //클라이언트 요청 - > title의 길이를 10글자로 제한
+
+
+        //when
+
+        mockMvc.perform( get( "/posts")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect( status().isOk())
+                /**
+                 * [{},{}, ....]
+                 */
+                .andExpect( jsonPath("$.length()", Matchers.is(2)))
                 .andDo(print());
         //then
     }
