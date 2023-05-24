@@ -1,1 +1,12 @@
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /hr-console
 
+
+  datasource:
+    url: jdbc:h2:mem:cho
+    usernama: sa
+    password:
+    driver-class-name: org.h2.Driver
