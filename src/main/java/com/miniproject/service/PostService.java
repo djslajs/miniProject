@@ -44,7 +44,11 @@ public class PostService {
          */
     }
 
-
+    /**
+     * 글이 많을 경우 비용이 너무 많이 든다
+     * DB가 뻗을 수 있다. timeover
+     * DB -> 에플리케이션 서버로 전달하는시간, 트래픽 비용 등이 많이 발생할 수 있다.
+     */
     public List<PostResponse> getList() {
        return postRepository.findAll().stream()
 //               .map(post -> PostResponse.builder()
