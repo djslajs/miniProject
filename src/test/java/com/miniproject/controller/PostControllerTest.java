@@ -15,6 +15,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -162,6 +166,36 @@ class PostControllerTest {
                 .andExpect( jsonPath("$[1].id").value( post2.getId()))
                 .andExpect( jsonPath("$[1].title").value( "제목2"))
                 .andExpect( jsonPath("$[1].content").value( "내용2"))
+                .andDo(print());
+        //then
+    }
+
+    @Test
+    @DisplayName( "페이징처리")
+    void test6() throws Exception {
+        //given
+        List<Post> requestPost = IntStream.range( 1, 31)
+                .mapToObj( i -> {
+                    return Post.builder()
+                            .title( "제목"+i)
+                            .content( "내용"+i)
+                            .build();
+                })
+                .collect( Collectors.toList());
+
+        postRepository.saveAll( requestPost);
+        //클라이언트 요청 - > title의 길이를 10글자로 제한
+
+
+        //when
+
+        mockMvc.perform( get( "/posts?page=1&sort=id,desc") // 정렬은 인덱스가 있는 것으로(속도문제)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect( status().isOk())
+                .andExpect( jsonPath("$.length()", Matchers.is( 5)))
+                .andExpect( jsonPath("$[0].id").value( 30))
+                .andExpect( jsonPath("$[0].title").value( "제목30"))
+                .andExpect( jsonPath("$[0].content").value( "내용30"))
                 .andDo(print());
         //then
     }

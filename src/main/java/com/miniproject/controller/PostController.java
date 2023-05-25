@@ -7,6 +7,9 @@ import com.miniproject.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.bind.BindResult;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -65,11 +68,12 @@ public class PostController {
      * 여러개 조회
      */
     @GetMapping("/posts")
-    public List<PostResponse> getList() {
+    public List<PostResponse> getList(Pageable pageable) {
         /**
          * Request 클래스 분리
          * Response 클래스 분리
          */
-        return postService.getList();
+
+        return postService.getList( pageable);
     }
 }
