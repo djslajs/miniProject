@@ -2,6 +2,7 @@ package com.miniproject.controller;
 
 import com.miniproject.domain.Post;
 import com.miniproject.request.PostCreate;
+import com.miniproject.request.PostSearch;
 import com.miniproject.response.PostResponse;
 import com.miniproject.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -68,12 +69,12 @@ public class PostController {
      * 여러개 조회
      */
     @GetMapping("/posts")
-    public List<PostResponse> getList(Pageable pageable) {
+    public List<PostResponse> getList(@ModelAttribute PostSearch postSearch) {
         /**
          * Request 클래스 분리
          * Response 클래스 분리
          */
 
-        return postService.getList( pageable);
+        return postService.getList( postSearch);
     }
 }

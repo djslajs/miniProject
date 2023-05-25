@@ -3,6 +3,7 @@ package com.miniproject.service;
 import com.miniproject.domain.Post;
 import com.miniproject.repositiry.PostRepository;
 import com.miniproject.request.PostCreate;
+import com.miniproject.request.PostSearch;
 import com.miniproject.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,9 +53,9 @@ public class PostService {
      * DB가 뻗을 수 있다. timeover
      * DB -> 에플리케이션 서버로 전달하는시간, 트래픽 비용 등이 많이 발생할 수 있다.
      */
-    public List<PostResponse> getList( Pageable pageable) {
+    public List<PostResponse> getList( PostSearch postSearch) {
         // web -> page 1 -> 0
-        return postRepository.findAll( pageable).stream()
+        return postRepository.getList( postSearch).stream()
                .map(PostResponse::new)
                .collect( Collectors.toList());
     }

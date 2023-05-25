@@ -3,6 +3,7 @@ package com.miniproject.service;
 import com.miniproject.domain.Post;
 import com.miniproject.repositiry.PostRepository;
 import com.miniproject.request.PostCreate;
+import com.miniproject.request.PostSearch;
 import com.miniproject.response.PostResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -79,7 +80,7 @@ class PostServiceTest {
     void test3() {
         //given
 
-        List<Post> requestPost = IntStream.range( 1, 31)
+        List<Post> requestPost = IntStream.range( 1, 20)
                 .mapToObj( i -> {
                     return Post.builder()
                             .title( "제목"+i)
@@ -90,13 +91,15 @@ class PostServiceTest {
 
         postRepository.saveAll( requestPost);
         //sql -> select, limit, offset
-        Pageable pageable = PageRequest.of( 0, 5, Sort.by( DESC, "id"));
+        PostSearch postSearch = PostSearch.builder()
+//                .page(1)
+//                .size(10)
+                .build();
         //when
-        List<PostResponse> posts = postService.getList( pageable);
+        List<PostResponse> posts = postService.getList( postSearch);
 
         //then
-        Assertions.assertEquals( 5L, posts.size());
-        Assertions.assertEquals( "제목30", posts.get(0).getTitle());
-        Assertions.assertEquals( "제목26", posts.get(4).getTitle());
+        Assertions.assertEquals( 10L, posts.size());
+        Assertions.assertEquals( "제목19", posts.get(0).getTitle());
     }
 }

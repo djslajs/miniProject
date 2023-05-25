@@ -189,10 +189,40 @@ class PostControllerTest {
 
         //when
 
-        mockMvc.perform( get( "/posts?page=1&sort=id,desc") // 정렬은 인덱스가 있는 것으로(속도문제)
+        mockMvc.perform( get( "/posts?page=1&size=10") // 정렬은 인덱스가 있는 것으로(속도문제)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect( status().isOk())
-                .andExpect( jsonPath("$.length()", Matchers.is( 5)))
+                .andExpect( jsonPath("$.length()", Matchers.is( 10)))
+                .andExpect( jsonPath("$[0].id").value( 30))
+                .andExpect( jsonPath("$[0].title").value( "제목30"))
+                .andExpect( jsonPath("$[0].content").value( "내용30"))
+                .andDo(print());
+        //then
+    }
+
+    @Test
+    @DisplayName( "페이지를 0으로 요청하면 첫 페이지를 가져온다")
+    void test7() throws Exception {
+        //given
+        List<Post> requestPost = IntStream.range( 1, 31)
+                .mapToObj( i -> {
+                    return Post.builder()
+                            .title( "제목"+i)
+                            .content( "내용"+i)
+                            .build();
+                })
+                .collect( Collectors.toList());
+
+        postRepository.saveAll( requestPost);
+        //클라이언트 요청 - > title의 길이를 10글자로 제한
+
+
+        //when
+
+        mockMvc.perform( get( "/posts?page=0&size=10") // 정렬은 인덱스가 있는 것으로(속도문제)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect( status().isOk())
+                .andExpect( jsonPath("$.length()", Matchers.is( 10)))
                 .andExpect( jsonPath("$[0].id").value( 30))
                 .andExpect( jsonPath("$[0].title").value( "제목30"))
                 .andExpect( jsonPath("$[0].content").value( "내용30"))
