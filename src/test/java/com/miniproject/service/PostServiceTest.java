@@ -99,7 +99,51 @@ class PostServiceTest {
         List<PostResponse> posts = postService.getList( postSearch);
 
         //then
-        Assertions.assertEquals( 10L, posts.size());
+        Assertions.assertEquals( 19L, posts.size());
         Assertions.assertEquals( "제목19", posts.get(0).getTitle());
+    }
+
+    @Test
+    @DisplayName( "게시글 수정")
+    void test4() {
+        Post post = Post.builder()
+                .title( "제목")
+                .content( "내용")
+                .build();
+        postRepository.save( post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title( "제목수정")
+                .build();
+
+        postService.edit( post.getId(), postEdit);
+        //then
+
+        Post postChange = postRepository.findById( post.getId())
+                .orElseThrow(() -> new RuntimeException( "글이 존재하지 않습니다"));
+        Assertions.assertEquals( "제목수정", postChange.getTitle());
+    }
+
+    @Test
+    @DisplayName( "글 내용수정 수정")
+    void test5() {
+        Post post = Post.builder()
+                .title( "제목")
+                .content( "내용")
+                .build();
+        postRepository.save( post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title( "제목")
+                .content( "내용수정")
+                .build();
+
+        postService.edit( post.getId(), postEdit);
+        //then
+
+        Post postChange = postRepository.findById( post.getId())
+                .orElseThrow(() -> new RuntimeException( "글이 존재하지 않습니다"));
+        Assertions.assertEquals( "제목", postChange.getTitle());
+        Assertions.assertEquals( "내용수정", postChange.getContent());
     }
 }

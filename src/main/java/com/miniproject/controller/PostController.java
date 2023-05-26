@@ -4,6 +4,7 @@ import com.miniproject.domain.Post;
 import com.miniproject.request.PostCreate;
 import com.miniproject.request.PostSearch;
 import com.miniproject.response.PostResponse;
+import com.miniproject.service.PostEdit;
 import com.miniproject.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -77,4 +78,10 @@ public class PostController {
 
         return postService.getList( postSearch);
     }
+
+    @PatchMapping("/posts/{postId}")
+    public void edit(@PathVariable(name = "postId") Long id, @RequestBody @Valid PostEdit request) {
+        postService.edit( id, request);
+    }
+
 }

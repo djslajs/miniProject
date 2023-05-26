@@ -2,6 +2,7 @@ package com.miniproject.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.miniproject.domain.Post;
+import com.miniproject.domain.PostEditor;
 import com.miniproject.repositiry.PostRepository;
 import com.miniproject.request.PostCreate;
 import org.hamcrest.Matchers;
@@ -19,8 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -226,6 +226,34 @@ class PostControllerTest {
                 .andExpect( jsonPath("$[0].id").value( 30))
                 .andExpect( jsonPath("$[0].title").value( "제목30"))
                 .andExpect( jsonPath("$[0].content").value( "내용30"))
+                .andDo(print());
+        //then
+    }
+
+    @Test
+    @DisplayName( "글 제목수정")
+    void test8() throws Exception {
+        //given
+        Post post = Post.builder()
+                .title( "제목")
+                .content( "내용")
+                .build();
+        postRepository.save( post);
+        //클라이언트 요청 - > title의 길이를 10글자로 제한
+
+        PostEditor postEditor = PostEditor.builder()
+                .title( "제목")
+                .content( "내용수정")
+                .build();
+
+        mockMvc.perform( patch( "/posts/{postId}", post.getId()) // 정렬은 인덱스가 있는 것으로(속도문제)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content( objectMapper.writeValueAsString( postEditor))
+                )
+                .andExpect( status().isOk())
+//                .andExpect( jsonPath("$.id").value( 1))
+//                .andExpect( jsonPath("$.title").value( "제목"))
+//                .andExpect( jsonPath("$.content").value( "내용수정"))
                 .andDo(print());
         //then
     }

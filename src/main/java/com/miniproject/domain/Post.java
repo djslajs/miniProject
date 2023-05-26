@@ -1,5 +1,6 @@
 package com.miniproject.domain;
 
+import com.miniproject.service.PostEdit;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,4 +29,20 @@ public class Post {
 //
 //        return this.title.substring( 0, 10);
 //    }
+
+    public void change( String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    public PostEditor.PostEditorBuilder toEditor() {
+         return PostEditor.builder()
+                .title( title)
+                .content( content);
+    }
+
+    public void edit(PostEditor postEditor) {
+        title = postEditor.getTitle();
+        content = postEditor.getContent();
+    }
 }
