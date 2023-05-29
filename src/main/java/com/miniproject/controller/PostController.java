@@ -1,6 +1,5 @@
 package com.miniproject.controller;
 
-import com.miniproject.domain.Post;
 import com.miniproject.request.PostCreate;
 import com.miniproject.request.PostSearch;
 import com.miniproject.response.PostResponse;
@@ -8,19 +7,10 @@ import com.miniproject.service.PostEdit;
 import com.miniproject.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.properties.bind.BindResult;
-import org.springframework.boot.context.properties.bind.DefaultValue;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController

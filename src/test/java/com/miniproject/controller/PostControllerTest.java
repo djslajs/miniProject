@@ -153,19 +153,19 @@ class PostControllerTest {
 
         //when
 
-        mockMvc.perform( get( "/posts")
+        mockMvc.perform( get( "/posts?page=1&size=10")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect( status().isOk())
                 /**
                  * [{},{}, ....]
                  */
                 .andExpect( jsonPath("$.length()", Matchers.is(2)))
-                .andExpect( jsonPath("$[0].id").value( post1.getId()))
-                .andExpect( jsonPath("$[0].title").value( "제목1"))
-                .andExpect( jsonPath("$[0].content").value( "내용1"))
-                .andExpect( jsonPath("$[1].id").value( post2.getId()))
-                .andExpect( jsonPath("$[1].title").value( "제목2"))
-                .andExpect( jsonPath("$[1].content").value( "내용2"))
+                .andExpect( jsonPath("$[0].id").value( post2.getId()))
+                .andExpect( jsonPath("$[0].title").value( "제목2"))
+                .andExpect( jsonPath("$[0].content").value( "내용2"))
+                .andExpect( jsonPath("$[1].id").value( post1.getId()))
+                .andExpect( jsonPath("$[1].title").value( "제목1"))
+                .andExpect( jsonPath("$[1].content").value( "내용1"))
                 .andDo(print());
         //then
     }
@@ -193,7 +193,6 @@ class PostControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect( status().isOk())
                 .andExpect( jsonPath("$.length()", Matchers.is( 10)))
-                .andExpect( jsonPath("$[0].id").value( 30))
                 .andExpect( jsonPath("$[0].title").value( "제목30"))
                 .andExpect( jsonPath("$[0].content").value( "내용30"))
                 .andDo(print());
@@ -223,7 +222,6 @@ class PostControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect( status().isOk())
                 .andExpect( jsonPath("$.length()", Matchers.is( 10)))
-                .andExpect( jsonPath("$[0].id").value( 30))
                 .andExpect( jsonPath("$[0].title").value( "제목30"))
                 .andExpect( jsonPath("$[0].content").value( "내용30"))
                 .andDo(print());

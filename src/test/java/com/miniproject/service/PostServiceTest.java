@@ -1,6 +1,7 @@
 package com.miniproject.service;
 
 import com.miniproject.domain.Post;
+import com.miniproject.exception.PostNotFound;
 import com.miniproject.repositiry.PostRepository;
 import com.miniproject.request.PostCreate;
 import com.miniproject.request.PostSearch;
@@ -11,16 +12,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.data.domain.Sort.Direction.*;
 
 @SpringBootTest
 class PostServiceTest {
@@ -160,5 +157,57 @@ class PostServiceTest {
         postService.delete( post.getId());
 
         Assertions.assertEquals( 0, postRepository.count());
+    }
+
+    @Test
+    @DisplayName( "글 한개 조회 - 존재 하지 않는글")
+    void test7() {
+        //given
+        Post post = Post.builder()
+                .title( "제목")
+                .content( "내용")
+                .build();
+        postRepository.save( post);
+
+        Long postId = post.getId();
+
+        // expected
+        Assertions.assertThrows( PostNotFound.class, () -> {
+            postService.get( post.getId() +1L);
+        });
+    }
+
+    @Test
+    @DisplayName( "게시글 삭제 - 존재하지않는글")
+    void test8() {
+        Post post = Post.builder()
+                .title( "제목")
+                .content( "내용")
+                .build();
+        postRepository.save( post);
+        // expected
+        Assertions.assertThrows( PostNotFound.class, () -> {
+            postService.delete( post.getId()+1L);
+        });
+    }
+
+    @Test
+    @DisplayName( "글 내용수정 수정 - 존재 하지 않는 글")
+    void test9() {
+        Post post = Post.builder()
+                .title( "제목")
+                .content( "내용")
+                .build();
+        postRepository.save( post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title( null)
+                .content( "내용수정")
+                .build();
+
+        //expected
+        Assertions.assertThrows( PostNotFound.class, () -> {
+            postService.edit( post.getId()+1L, postEdit);
+        });
     }
 }
