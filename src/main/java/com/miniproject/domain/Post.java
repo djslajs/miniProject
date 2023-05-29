@@ -41,6 +41,11 @@ public class Post {
                 .content( content);
     }
 
+    public void edit( String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
     public void edit(PostEditor postEditor) {
         title = postEditor.getTitle();
         content = postEditor.getContent();

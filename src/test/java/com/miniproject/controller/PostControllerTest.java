@@ -258,4 +258,23 @@ class PostControllerTest {
         //then
     }
 
+    @Test
+    @DisplayName( "글 삭제")
+    void test9() throws Exception {
+        //given
+        Post post = Post.builder()
+                .title( "제목")
+                .content( "내용")
+                .build();
+        postRepository.save( post);
+        //클라이언트 요청 - > title의 길이를 10글자로 제한
+
+        mockMvc.perform( delete( "/posts/{postId}", post.getId()) // 정렬은 인덱스가 있는 것으로(속도문제)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andExpect( status().isOk())
+                .andDo(print());
+        //then
+    }
+
 }
