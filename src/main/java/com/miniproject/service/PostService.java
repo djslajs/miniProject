@@ -35,7 +35,7 @@ public class PostService {
 
     public PostResponse get( Long id) {
         Post post = postRepository.findById( id)
-                .orElseThrow(() -> new PostNotFound());
+                .orElseThrow(PostNotFound::new);
         return  PostResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())

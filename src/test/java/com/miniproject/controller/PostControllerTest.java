@@ -275,4 +275,66 @@ class PostControllerTest {
         //then
     }
 
+    @Test
+    @DisplayName( "존재하지 않는글 조회")
+    void test10() throws Exception {
+
+        //expected
+        mockMvc.perform( delete( "/posts/{postId}", 1L) // 정렬은 인덱스가 있는 것으로(속도문제)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect( status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName( "존재하지 게시글 수정")
+    void test11() throws Exception {
+
+        //expected
+        PostEditor postEditor = PostEditor.builder()
+                .title( "제목")
+                .content( "내용수정")
+                .build();
+
+        mockMvc.perform( patch( "/posts/{postId}", 1L) // 정렬은 인덱스가 있는 것으로(속도문제)
+                .content( objectMapper.writeValueAsString( postEditor)) // 정렬은 인덱스가 있는 것으로(속도문제)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect( status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName( "게시글 작성시 바보는 포함될 수 없다.")
+    void test12() throws Exception {
+        PostCreate postCreate = PostCreate.builder()
+                .title("나는 바보입니다.")
+                .content("내용입니다.")
+                .build();
+        String jsonData = objectMapper.writeValueAsString( postCreate);
+
+        mockMvc.perform( post( "/posts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content( jsonData)
+        )
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+        // then
+    }
+
+
+    /**
+     *
+     * API 문서 생서
+     *
+     * GET /posts/{postId} -> 단건조회
+     * POST /posts -> 게시글 등록
+     *
+     * 클라이언트 입장 어떤 API 있는지 ㅁ름
+     *
+     * Spring RestDocs
+     * - 운영코드에 -> 영향
+     * - 코드 수정 -> 문서를 수정 x -> 코드(기능) <-> 문서
+     * - Test 케이스실행 -> 문서를 생성해 준다.
+     */
+
 }

@@ -1,5 +1,6 @@
 package com.miniproject.controller;
 
+import com.miniproject.exception.InValidRequest;
 import com.miniproject.request.PostCreate;
 import com.miniproject.request.PostSearch;
 import com.miniproject.response.PostResponse;
@@ -38,6 +39,11 @@ public class PostController {
          *  응답 필요 없음 -> 클라이언트에서 모든 POST 데이터 context를 잘 관리함
          *  서버에서 유연하게 대응하는게 좋다( fix X) -> 한번에 잘 처리되는 케이스는 거의 없다. 잘 관리하는 형태로 하는것이 좋다.
          */
+
+//        if( request.getTitle().contains( "바보")) {
+//            throw new InValidRequest();
+//        }
+        request.isValid();
         postService.write( request);
     }
 
