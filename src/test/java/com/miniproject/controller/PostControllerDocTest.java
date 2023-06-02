@@ -76,8 +76,8 @@ public class PostControllerDocTest {
                         ),
                         responseFields(
                                 fieldWithPath( "id").description( "게시글 ID"),
-                                fieldWithPath( "title").description( "제목").attributes( key( "constraints").value( "제목 입력해주세요.")),
-                                fieldWithPath( "content").description( "내용").optional()
+                                fieldWithPath( "title").description( "제목"),
+                                fieldWithPath( "content").description( "내용")
                         )
                 ));
     }
@@ -100,8 +100,8 @@ public class PostControllerDocTest {
                 .andExpect(status().isOk())
                 .andDo(document("post-create",
                         requestFields(
-                                fieldWithPath( "title").description( "제목"),
-                                fieldWithPath( "content").description( "내용")
+                                fieldWithPath( "title").description( "제목").attributes( key( "constraints").value( "제목 입력해주세요.")),
+                                fieldWithPath( "content").description( "내용").optional()
                         )
                 ));
     }

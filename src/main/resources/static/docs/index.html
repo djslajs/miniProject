@@ -435,14 +435,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body class="article">
+<body class="book toc2 toc-left">
 <div id="header">
 <h1>Cho API</h1>
 <div class="details">
 <span id="revnumber">version 0.0.1-SNAPSHOT</span>
 </div>
-<div id="toc" class="toc">
+<div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_글_단건조회">글 단건조회</a>
@@ -464,20 +465,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_글_단건조회">글 단건조회</h2>
+<h2 id="_글_단건조회"><a class="link" href="#_글_단건조회">글 단건조회</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_요청">요청</h3>
+<h3 id="_요청"><a class="link" href="#_요청">요청</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /posts/1 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /posts/1 HTTP/1.1
 Accept: application/json
 Host: api.cho.com</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_요청_파라메터">요청 파라메터</h3>
+<h3 id="_요청_파라메터"><a class="link" href="#_요청_파라메터">요청 파라메터</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. /posts/{postId}</caption>
 <colgroup>
@@ -499,10 +500,10 @@ Host: api.cho.com</code></pre>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_응답">응답</h3>
+<h3 id="_응답"><a class="link" href="#_응답">응답</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json
 Content-Length: 46
 
@@ -542,10 +543,10 @@ Content-Length: 46
 </table>
 </div>
 <div class="sect2">
-<h3 id="_curl">CURL</h3>
+<h3 id="_curl"><a class="link" href="#_curl">CURL</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://api.cho.com/posts/1' -i -X GET \
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'https://api.cho.com/posts/1' -i -X GET \
     -H 'Accept: application/json'</code></pre>
 </div>
 </div>
@@ -553,13 +554,13 @@ Content-Length: 46
 </div>
 </div>
 <div class="sect1">
-<h2 id="_글_작성">글 작성</h2>
+<h2 id="_글_작성"><a class="link" href="#_글_작성">글 작성</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_요청_2">요청</h3>
+<h3 id="_요청_2"><a class="link" href="#_요청_2">요청</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /posts HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /posts HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Content-Length: 39
@@ -591,23 +592,23 @@ Host: api.cho.com
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">제목</p></td>
 <td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">제목 입력해주세요.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">content</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">내용</p></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_curl_2">CURL</h3>
+<h3 id="_curl_2"><a class="link" href="#_curl_2">CURL</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://api.cho.com/posts' -i -X POST \
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'https://api.cho.com/posts' -i -X POST \
     -H 'Content-Type: application/json;charset=UTF-8' \
     -H 'Accept: application/json' \
     -d '{"title":"제목1","content":"내용1"}'</code></pre>
@@ -620,8 +621,11 @@ Host: api.cho.com
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-06-01 20:13:38 +0900
+Last updated 2023-06-02 18:36:56 +0900
 </div>
 </div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
 </body>
 </html>
