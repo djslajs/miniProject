@@ -43,30 +43,9 @@ class PostControllerTest {
         postRepository.deleteAll();
     }
 
-    @Test
-    @DisplayName( "/posts 요청시 hello 출력")
-    void test() throws Exception {
-        // given
-        PostCreate postCreate = PostCreate.builder()
-                .title( "제목입니다.")
-                .content("내용입니다.")
-                .build();
-        String jsonData = objectMapper.writeValueAsString( postCreate);
-
-        System.out.println( jsonData);
-        // expected
-
-        mockMvc.perform( post( "/posts")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content( jsonData)
-                )
-                .andExpect(status().isOk())
-                .andExpect(content().string(""))
-                .andDo(print());
-    }
 
     @Test
-    @DisplayName( "/posts 요청시 title값을 필수다.")
+    @DisplayName( "글 작성 요청시 title값을 필수다.")
     void test2() throws Exception {
         PostCreate postCreate = PostCreate.builder()
                 .content("내용입니다")
@@ -93,7 +72,8 @@ class PostControllerTest {
                 .build();
         String jsonData = objectMapper.writeValueAsString( postCreate);
 
-        mockMvc.perform( post( "/posts")
+        mockMvc.perform( post( "/posts?authorization={authorization}", "cho")
+                .header( "authorization", "cho2")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content( jsonData)
                 )

@@ -1,5 +1,6 @@
 package com.miniproject.controller;
 
+import com.miniproject.config.data.UserSession;
 import com.miniproject.exception.InValidRequest;
 import com.miniproject.request.PostCreate;
 import com.miniproject.request.PostSearch;
@@ -20,8 +21,19 @@ public class PostController {
 
     private final PostService postService;
 
+    @GetMapping("/foo")
+    public String foo( UserSession userSession) {
+        log.info( ">>> {}", userSession.name);
+        return userSession.name;
+    }
+
+    @GetMapping("/bar")
+    public String bar() {
+        return "인증이 필요없는 페이지";
+    }
+
     @PostMapping( "/posts")
-    public void post(@RequestBody @Valid PostCreate request) {//, BindingResult result) {
+    public void post(@RequestBody @Valid PostCreate request, @RequestHeader String authorization /*@RequestParam(required = true) String authorization*/) {//, BindingResult result) {
 
         /**
          *  데이터 검증이유
@@ -43,8 +55,16 @@ public class PostController {
 //        if( request.getTitle().contains( "바보")) {
 //            throw new InValidRequest();
 //        }
-        request.isValid();
-        postService.write( request);
+
+        /**
+         * 1. GET Parameter -> ??
+         * 2. POST(body) value
+         * 3. Header
+         */
+//        if( authorization.equals("cho")) {
+            request.isValid();
+            postService.write( request);
+//        }
     }
 
     /**
