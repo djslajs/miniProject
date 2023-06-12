@@ -1,0 +1,1 @@
+insert into `login_user` ( name, email, password, create_At) values ( 'cho', 'asd@naver.com', '1234', '2023-06-12 17:43:00')
