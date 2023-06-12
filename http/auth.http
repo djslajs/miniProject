@@ -5,5 +5,5 @@ Content-Type: application/json
 
 {
   "email":  "asd@naver.com",
-  "password": "1235"
+  "password": "1234"
 }
