@@ -7,3 +7,8 @@ Content-Type: application/json
   "email":  "asd@naver.com",
   "password": "1234"
 }
+
+### 인증페이지 요청
+GET localhost:8080/foo
+Content-Type: application/json
+Cookie: SESSION=3eac0623-d298-4fea-bd85-36d3de431cf2
