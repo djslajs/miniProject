@@ -1,5 +1,6 @@
 package com.miniproject.controller;
 
+import com.miniproject.config.AppConfig;
 import com.miniproject.domain.Session;
 import com.miniproject.request.Login;
 import com.miniproject.response.SessionResponse;
@@ -28,12 +29,13 @@ public class AuthController {
 
     private final AuthService authService;
 
-    private final String KEY = "GNestrg5aea6Wyt+k31NyjOrpszmlVsnVOjwQ3wZNjs=";
+    private final AppConfig appConfig;
 
     @PostMapping("/auth/login")
     public SessionResponse login(@RequestBody Login login) {
         Long userId = authService.sinIn( login);
-        SecretKey key = Keys.hmacShaKeyFor( Base64.getDecoder().decode( KEY));
+
+        SecretKey key = Keys.hmacShaKeyFor( Base64.getDecoder().decode( appConfig.KEY));
         String jws = Jwts.builder()
                 .setSubject(String.valueOf( userId))
                 .signWith(key)

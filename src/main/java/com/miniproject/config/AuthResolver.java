@@ -27,7 +27,7 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
 
     private final SessionRepository sessionRepository;
 
-    private final static String KEY = "GNestrg5aea6Wyt+k31NyjOrpszmlVsnVOjwQ3wZNjs=";
+    private final AppConfig appConfig;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -36,7 +36,8 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-//        HttpServletRequest servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
+        log.info(">>>>>>>>>>{}", appConfig.toString());
+        //        HttpServletRequest servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
 //        if( servletRequest == null) {
 //            log.error( "servletRequest null");
 //            throw new UnAuthorized();
@@ -56,7 +57,7 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
             throw new UnAuthorized();
         }
 
-        byte[] decodedKey = Base64.decodeBase64( KEY);
+        byte[] decodedKey = Base64.decodeBase64( appConfig.KEY);
         try {
             Jws<Claims> claims = Jwts.parserBuilder()
                     .setSigningKey( decodedKey)

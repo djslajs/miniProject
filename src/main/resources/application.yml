@@ -22,3 +22,13 @@ spring:
     usernama: sa
     password:
     driver-class-name: org.h2.Driver
+
+cho:
+  hello:
+    - "1"
+    - "2"
+    - "3"
+  mapTest:
+    name: "hey"
+    resp: "success"
+  KEY: "GNestrg5aea6Wyt+k31NyjOrpszmlVsnVOjwQ3wZNjs="
