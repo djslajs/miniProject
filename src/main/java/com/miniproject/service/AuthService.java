@@ -16,11 +16,11 @@ public class AuthService {
     private final UserRepository userRepository;
 
     @Transactional
-    public String sinIn(Login login) {
+    public Long sinIn(Login login) {
         LoginUser user = userRepository.findByEmailAndPassword(login.getEmail(), login.getPassword())
                 .orElseThrow(InvalidSignInInformation::new);
         Session session = user.addSession();
 
-        return session.getAccessToken();
+        return user.getId();
     }
 }
