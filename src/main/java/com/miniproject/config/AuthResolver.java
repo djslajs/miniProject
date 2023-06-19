@@ -57,10 +57,10 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
             throw new UnAuthorized();
         }
 
-        byte[] decodedKey = Base64.decodeBase64( appConfig.KEY);
+//        byte[] decodedKey = Base64.decodeBase64( appConfig.KEY);
         try {
             Jws<Claims> claims = Jwts.parserBuilder()
-                    .setSigningKey( decodedKey)
+                    .setSigningKey(appConfig.getKEY())
                     .build()
                     .parseClaimsJws( jws);
             log.info(">>>>>{}", claims);

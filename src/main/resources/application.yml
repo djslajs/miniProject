@@ -15,7 +15,7 @@ spring:
 
   sql:
     init:
-      model: always
+      mode: never
 
   datasource:
     url: jdbc:h2:mem:cho

@@ -7,6 +7,7 @@ import com.miniproject.domain.Session;
 import com.miniproject.repositiry.SessionRepository;
 import com.miniproject.repositiry.UserRepository;
 import com.miniproject.request.Login;
+import com.miniproject.request.SignUp;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -167,6 +168,24 @@ public class AuthControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isUnauthorized())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("회원가입")
+    void test7() throws Exception {
+        //given
+        SignUp signUp = SignUp.builder()
+                .name( "Cho")
+                .password("1234")
+                .email("djslajs@naver.com")
+                .build();
+
+        mockMvc.perform( post( "/auth/signup")
+                .content(objectMapper.writeValueAsString( signUp))
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andExpect(status().isOk())
                 .andDo(print());
     }
 
