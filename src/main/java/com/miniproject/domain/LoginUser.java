@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,16 +27,6 @@ public class LoginUser {
 
     private LocalDateTime createAt;
 
-    @OneToMany( cascade = CascadeType.ALL, mappedBy = "loginUser")
-    private List<Session> sessions = new ArrayList<>();
-
-    public Session addSession() {
-        Session session = Session.builder()
-                .loginUser( this)
-                .build();
-        sessions.add( session);
-        return session;
-    }
     @Builder
     public LoginUser(String name, String email, String password) {
         this.name = name;

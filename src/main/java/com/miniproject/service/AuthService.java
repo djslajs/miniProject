@@ -22,21 +22,6 @@ public class AuthService {
 
     private final PasswordEncoder encoder;
 
-    @Transactional
-    public Long singIn(Login login) {
-//        LoginUser user = userRepository.findByEmailAndPassword(login.getEmail(), login.getPassword())
-//                .orElseThrow(InvalidSignInInformation::new);
-//        Session session = user.addSession();
-
-        LoginUser user = userRepository.findByEmail(login.getEmail())
-                .orElseThrow( InvalidSignInInformation::new);
-
-        if( !encoder.matches(login.getPassword(), user.getPassword())) {
-            throw new InvalidSignInInformation();
-        }
-        return user.getId();
-    }
-
     public void signUp(SignUp signUp) {
         Optional<LoginUser> userOptional = userRepository.findByEmail( signUp.getEmail());
         if( userOptional.isPresent()) {

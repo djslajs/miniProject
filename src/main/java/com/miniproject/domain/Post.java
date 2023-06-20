@@ -3,7 +3,7 @@ package com.miniproject.domain;
 import com.miniproject.service.PostEdit;
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @NoArgsConstructor( access = AccessLevel.PUBLIC)

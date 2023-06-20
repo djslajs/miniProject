@@ -71,47 +71,4 @@ class AuthServiceTest {
 
         // then
     }
-
-    @Test
-    @DisplayName( "로그인 성공")
-    void test3() {
-        // given
-        ScryptPasswordEncoder encoder = new ScryptPasswordEncoder();
-        String encryptPassword = encoder.encrypt( "1234");
-        LoginUser user = LoginUser.builder()
-                .name( "Cho")
-                .password( encryptPassword)
-                .email("djslajs@naver.com")
-                .build();
-        userRepository.save( user);
-
-        Login login = Login.builder()
-                .email( "djslajs@naver.com")
-                .password( "1234")
-                .build();
-        // when
-
-        Long userId = authService.singIn( login);
-        // then
-        Assertions.assertNotNull( userId);
-    }
-
-    @Test
-    @DisplayName( "비밀번호 틀림")
-    void test4() {
-        // given
-        SignUp signUp = SignUp.builder()
-                .name( "Cho")
-                .password("1234")
-                .email("djslajs@naver.com")
-                .build();
-        authService.signUp( signUp);
-
-        Login login = Login.builder()
-                .email( "djslajs@naver.com")
-                .password( "12345")
-                .build();
-        // expected
-        Assertions.assertThrows(InvalidSignInInformation.class, () -> authService.singIn( login));
-    }
 }

@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -21,19 +21,8 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("/foo")
-    public Long foo( UserSession userSession) {
-        log.info( ">>> {}", userSession.id);
-        return userSession.id;
-    }
-
-    @GetMapping("/bar")
-    public String bar() {
-        return "인증이 필요없는 페이지";
-    }
-
     @PostMapping( "/posts")
-    public void post(@RequestBody @Valid PostCreate request, @RequestHeader String authorization /*@RequestParam(required = true) String authorization*/) {//, BindingResult result) {
+    public void post(@RequestBody @Valid PostCreate request/*, @RequestHeader String authorization @RequestParam(required = true) String authorization*/) {//, BindingResult result) {
 
         /**
          *  데이터 검증이유

@@ -1,6 +1,5 @@
 package com.miniproject.repositiry;
 
-import com.miniproject.controller.PostRepositoryCustom;
 import com.miniproject.domain.Post;
 import com.miniproject.domain.QPost;
 import com.miniproject.request.PostSearch;

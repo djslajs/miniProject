@@ -1,4 +1,4 @@
-package com.miniproject.controller;
+package com.miniproject.repositiry;
 
 import com.miniproject.domain.Post;
 import com.miniproject.request.PostSearch;
