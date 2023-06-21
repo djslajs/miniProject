@@ -9,6 +9,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -41,7 +47,32 @@ public class SecurityConfig{
                     .requestMatchers("/auth/login").permitAll()
                     .anyRequest().authenticated()
                 .and()
+                .formLogin()
+                    .usernameParameter( "username")
+                    .passwordParameter( "password")
+                    .loginPage( "/auth/login")
+                    .loginProcessingUrl("/auth/login")
+                    .defaultSuccessUrl("/")
+                .and()
+                .userDetailsService( userDetailsService())
                 .csrf(AbstractHttpConfigurer::disable) // csrf가 무엇은지 체크해보기
                 .build();
+    }
+
+    @Bean // 로그인 정보 체크
+    public UserDetailsService userDetailsService() {
+        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+        UserDetails user = User
+                .withUsername("cho")
+                .password("1234")
+                .roles("ADMIN")
+                .build();
+        manager.createUser( user);
+        return manager;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
     }
 }
